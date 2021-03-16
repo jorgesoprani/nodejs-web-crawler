@@ -1,0 +1,26 @@
+{
+    "name": "Americanas",
+    "url": "https://www.americanas.com.br/busca/@search",
+    "scripts": "./scripts/americanas.js",
+    "selectors": {
+        "parent": "[class*='src__ColGridItem']",
+        "props": {
+            "image": {
+                "selector": "[class*='src__WrapperPicture'] img",
+                "propName": "src"
+            },
+            "name": {
+                "selector": "[class*='src__Name']",
+                "propName": "textContent"
+            },
+            "link": {
+                "selector": "[class*='src__Wrapper'] > a",
+                "propName": "href"
+            },
+            "price": {
+                "selector": "span[class*='src__PromotionalPrice']",
+                "propName": "textContent"
+            }
+        }
+    }
+}

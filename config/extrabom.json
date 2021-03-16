@@ -1,0 +1,26 @@
+{
+    "name": "Extrabom",
+    "url": "https://www.extrabom.com.br/busca/?q=@search",
+    "scripts": null,
+    "selectors": {
+        "parent": ".carousel__item",
+        "props": {
+            "image": {
+                "selector": "img.carousel__img",
+                "propName": "src"
+            },
+            "name": {
+                "selector": ".name-produto",
+                "propName": "innerText"
+            },
+            "link": {
+                "selector": "a.carousel__box__dados",
+                "propName": "href"
+            },
+            "price": {
+                "selector": ".item-por__val",
+                "propName": "innerText"
+            }
+        }
+    }
+}
