@@ -3,7 +3,6 @@ const fs = require('fs');
 
 const search = async (url, options, existingBrowser, outputProvider) => {
   console.log(`Executing search on: ${options.name}: ${url}`)
-  const searchUrl = options.url;
 
   let browser;
   if (!existingBrowser)
@@ -14,9 +13,7 @@ const search = async (url, options, existingBrowser, outputProvider) => {
   const page = await browser.newPage();
   await page.setUserAgent(`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36`);
 
-  const finalUrl = searchUrl.replace("@search", encodeURIComponent(searchTerm));
-  console.log(finalUrl);
-  await page.goto(finalUrl, {
+  await page.goto(url, {
     waitUntil: "networkidle0",
   });
 
@@ -30,14 +27,13 @@ const search = async (url, options, existingBrowser, outputProvider) => {
   }
 
   const result = await page.evaluate((options) => {
-    const allResults = {};
+    const allResults = [];
     try {
 
       const nodeList = [
         ...document.querySelectorAll(options.selectors.parent),
       ];
 
-      const result = [];
       for (const node of nodeList) {
         const obj = {};
         const props = options.selectors.props;
@@ -50,17 +46,22 @@ const search = async (url, options, existingBrowser, outputProvider) => {
             obj[prop] = null;
           }
         }
-        result.push(obj);
+        allResults.push({ ...obj, source: options.name });
       }
-      allResults[options.name] = result;
     } catch (error) {
-      return error;
+      return { isError: true, data: error };
     }
-    return allResults;
+    return { isError: false, data: allResults };
   }, options);
-
-  if (!outputProvider) {
-    defaultOutput(page, result, options);
+    
+  if (result.isError) {
+    throw result.data;
+  } else {
+    if (!outputProvider) {
+      defaultOutput(page, result.data, options);
+    } else {
+      outputProvider.addToResult(result.data);
+    }
   }
 };
 
