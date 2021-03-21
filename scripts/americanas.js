@@ -10,7 +10,7 @@ module.exports = {
 
         const pageUrls = await page.evaluate((config, url) => {
             const maxPages = config.maxPages || 10000;
-            const totalItems = Number(document.querySelector(`[class*='full-grid__TotalText']`).innerText.split(' ')[0].replace('.', '')) / 50;
+            const totalItems = Number(document.querySelector(`[class*='full-grid__TotalText']`).innerText.split(' ')[0].replace('.', ''));
 
             const numberOfPages = Math.min(maxPages, Math.ceil(totalItems / 50));
             const pageUrls = [];
