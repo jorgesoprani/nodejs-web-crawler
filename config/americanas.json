@@ -2,7 +2,7 @@
     "name": "Americanas",
     "url": "https://www.americanas.com.br/busca/@search",
     "scripts": "./scripts/americanas.js",
-    "maxPages": 1,
+    "maxPages": 10,
     "selectors": {
         "parent": "[class*='src__ColGridItem']",
         "props": {
